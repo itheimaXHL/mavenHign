@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			    http://www.springframework.org/schema/beans/spring-beans.xsd
+			    http://www.springframework.org/schema/context
+			    http://www.springframework.org/schema/context/spring-context.xsd
+			    http://www.springframework.org/schema/aop
+			    http://www.springframework.org/schema/aop/spring-aop.xsd
+			    http://www.springframework.org/schema/tx
+			    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--扫描非Controller类-->
+    <context:component-scan base-package="com.itcast">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--引入数据库配置文件-->
+    <context:property-placeholder location="classpath:druid.properties"/>
+
+    <!--开始整合myabatis-->
+
+    <!--创建数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.name}"
+          p:password="${jdbc.password}"/>
+
+
+    <!--创建sqlSessionBean工厂-->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          p:dataSource-ref="dataSource" p:typeAliasesPackage="com.itcast.pojo"/>
+
+    <!--扫描包-->
+
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+          p:basePackage="com.itcast.dao"/>
+
+    <!--结束整合myabatis-->
+
+
+</beans>

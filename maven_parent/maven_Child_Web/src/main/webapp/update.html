@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="/js/getParameter.js"></script>
+
+    <script>
+
+        $(function () {
+            var id = getParameter("id");
+            $("#id").val(id);
+            $.post("items/findByIdAjax",{id:id},function (data) {
+                    $("#name").val(data.name);
+                    $("#price").val(data.price);
+                    $("#createtime").val(getTime(data.createtime));
+                    $("#detail").val(data.detail);
+            },"json");
+            $("#button").click(function () {
+                $.post("items/updateAjax",$("#form").serialize(),function (data) {
+                    if (data=!null) {
+                        location.href="/success.html";
+                    }
+                },"json");
+            });
+
+
+            function getTime(date) {
+                if (date!=null) {
+                    time = new Date(date);
+                    return time.getFullYear()+"/"+(time.getMonth()+1)+"/"+time.getDay();
+                }else {
+                    return null;
+                }
+            }
+        });
+
+    </script>
+
+</head>
+<body>
+    <form method="post" id="form">
+        <input type="hidden" name="id" id="id">
+        姓名:<input type="text" id="name" name="name" value=""><br>
+        价格:<input type="text" id="price" name="price" value=""><br>
+        时间:<input type="text" id="createtime" name="createtime" value=""><br>
+        详细:<input type="text" id="detail" name="detail" value=""><br>
+        <input type="button" value="修改" id="button">
+    </form>
+</body>
+</html>

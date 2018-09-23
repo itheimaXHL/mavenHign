@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="/js/jquery-3.3.1.js"></script>
+    <script src="/js/getParameter.js"></script>
+
+    <script>
+        $(function () {
+            $("#button").click(function () {
+                $.post("/items/saveItemsAjax",$("#form").serialize(),function (data) {
+                    if (data.pic==null) {
+                        location.href="/success.html";
+                    }else {
+                        $("#error").html(data.pic);
+                    }
+                },"json");
+            });
+        });
+    </script>
+</head>
+<body>
+<span type="text" id="error"></span>
+<form  method="post" id="form">
+    姓名:<input type="text" name="name" value=""><br>
+    价格:<input type="text" name="price" value=""><br>
+    时间:<input type="text" name="createtime" value=""><br>
+    详细:<input type="text" name="detail" value=""><br>
+    <input type="button" value="添加" id="button">
+</form>
+</body>
+</html>
